@@ -2,13 +2,17 @@ from collector.linux_collector import LinuxLogCollector
 from normalizer.normalizer import normalize_log
 from analyzer.rules_engine import RulesEngine
 from storage.jsonl_writer import JSONLWriter
+from alerts.alert_manager import AlertManager
 
 writer = JSONLWriter()
 
-def alert_handler(alert):
-    writer.write_alert(alert)
+alert_manager = AlertManager(
+    writer=writer,
+    telegram_token=None,  # Replace with your Telegram bot token if needed
+    telegram_chat_id=None  # Replace with your Telegram chat ID if needed
+)
 
-engine = RulesEngine(alert_callback=alert_handler)
+engine = RulesEngine(alert_callback=alert_manager.handle_alert)
 
 def process_line(line):
     event = normalize_log(line, source="linux")
