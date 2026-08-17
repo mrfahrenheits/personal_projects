@@ -8,8 +8,17 @@ writer = JSONLWriter()
 
 alert_manager = AlertManager(
     writer=writer,
-    telegram_token=None,  # Replace with your Telegram bot token if needed
-    telegram_chat_id=None  # Replace with your Telegram chat ID if needed
+
+    # Telegram
+    telegram_token=None,  
+    telegram_chat_id=None,  
+
+    # Email
+    smtp_server=None,
+    smtp_port=None,
+    smtp_user=None,
+    smtp_password=None,
+    email_to=None
 )
 
 engine = RulesEngine(alert_callback=alert_manager.handle_alert)
