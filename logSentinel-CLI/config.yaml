@@ -1,0 +1,30 @@
+# .yaml configuration example for logSentinel-CLI
+
+collectors:
+  linux:
+    enabled: true
+    filepath: "/var/log/auth.log"
+
+  windows:
+    enabled: true
+    log_name: "Security"
+
+  apache:
+    enabled: true
+    filepath: "/var/log/apache2/access.log"
+
+storage:
+  events_path: "data/events.jsonl"
+  alerts_path: "data/alerts.jsonl"
+
+alerts:
+  telegram:
+    token: null
+    chat_id: null
+
+  email:
+    smtp_server: null
+    smtp_port: null
+    smtp_user: null
+    smtp_password: null
+    email_to: null
