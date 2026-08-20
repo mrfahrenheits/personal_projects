@@ -54,10 +54,10 @@ def handle_alert(self, alert: dict):
 
     # 2) Send an alert via Telegram (optional)
     if self.telegram_token and self.telegram_chat_id:
-        self.send_telegram(alert)
+        self._send_telegram(alert)
 
     # 3) Send an alert via email (optional)
-    if self.smt_server and self.smtp_user and self.email_to:
+    if self.smtp_server and self.smtp_user and self.email_to:
         self._send_email(alert)
 
 # ---------------------------------------------------------
