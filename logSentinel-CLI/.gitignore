@@ -1,1 +1,7 @@
 venv/
+storage/__pycache__/
+normalizer/__pycache__/
+data/
+collector/__pycache__/
+analyzer/__pycache__/
+alerts/__pycache__/
