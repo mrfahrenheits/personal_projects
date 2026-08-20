@@ -32,15 +32,39 @@ class WindowsEventLogCollector:
 
             if events:
                 for event in reversed(events):
+
+                    # Skip already processed events
                     if last_record and event.RecordNumber <= last_record:
                         continue
 
                     last_record = event.RecordNumber
 
-                    if self.callback:
-                        try:
-                            self.callback(event)
-                        except Exception as e:
-                            logging.error(f"Error in callback: {e}")
+                    try:
+                        # Extract message safely (works for ALL event types)
+                        if hasattr(event, "Strings") and event.Strings:
+                            message = " ".join([str(s) for s in event.Strings])
+                        else:
+                            message = f"Event {event.EventID} (no message)"
+
+                        # Build normalized event dictionary
+                        data = {
+                            "source": "windows",
+                            "event_id": event.EventID,
+                            "record_number": event.RecordNumber,
+                            "computer": event.ComputerName,
+                            "category": event.EventCategory,
+                            "time_generated": event.TimeGenerated.Format(),
+                            "message": message,
+                        }
+
+                        # Send to pipeline
+                        if self.callback:
+                            try:
+                                self.callback(data)
+                            except Exception as e:
+                                logging.error(f"Error in callback: {e}")
+
+                    except Exception as e:
+                        logging.error(f"Failed to normalize Windows event: {e}")            
 
             time.sleep(self.interval)
